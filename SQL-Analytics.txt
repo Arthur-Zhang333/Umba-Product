@@ -1,17 +1,31 @@
-#Joining Tables
+Joining Tables
 
-SELECT l.id as loan_id, l.amount as loan_amount, l.user_id, u.created as "user.created", transaction_fee, t_type
+SELECT l.id as "loan.id", l.amount as "loan.amount", l.user_id, u.created as "user.created", transaction_fee, t_type
 FROM users u JOIN loans l ON u.id = l.user_id
 JOIN transactions t ON t.loan_id = l.id
-WHERE (loan_status = 'active' or loan_status = 'repaid')AND (t_type = 'disbursement')
+WHERE (loan_status = 'active' or loan_status = 'repaid') AND (t_type = 'disbursement')
 ORDER BY u.created DESC;
 
+# First of all, I need to join three tables together. I chose to join users and loans based on the shared attribute of user_id. And I joined transactions table
+# based on the loan_id.
+# Secondly, I need to write the conditions. Since the question asks me to filter the loan status to "active" or "repaid", I specifiy the condition as 
+# "loan_status = 'active' or loan_status = 'repaid'". Not only that, I also need to filter all the transaction type to 'disbursement'. So,I add a condition of 
+# t_type = 'disbursement' and set the operand equals to 'AND' becuase these two conditions need to be satisfied at the same time.
+# Thirdly, I order all the rows based on the desceding order of user creating date.
+# Lastly, I display all the desired attributes: loan.id, loan.amount, user_id, user.created, transaction_fee, and t_type.
 
 
 
-#Aggregation
+Aggregation
 
 SELECT COUNT(id) as loan_number, SUM(amount) as amount_sum, AVG(amount) as amount_avg, MIN(amount) as smallest_loan, MAX(amount) as largest_loan
 FROM loans
 GROUP BY EXTRACT(MONTH FROM created)
 ORDER BY EXTRACT(MONTH FROM created) DESC;
+
+# First of all, I need to group all the data in loans table by the month of 'created' column. So, I proceed with EXTRACT function to get all the month value from
+# the 'created' attribute.
+# Secondly, I need to order all the value in the descending order fof the month becuase the question asks me to display the most recent month first.
+# Lastly, I need to display all the desired attributes. To get the number of loans, I use the COUNT function. I use SUM function to get the total amount of
+# all loans. And I write AVG function to get the average amount of each loan. Finally, I use MIN and MAX functions to get the smallest loan size and the largest 
+# loan size per month.
