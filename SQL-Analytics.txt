@@ -1,0 +1,17 @@
+#Joining Tables
+
+SELECT l.id as loan_id, l.amount as loan_amount, l.user_id, u.created as "user.created", transaction_fee, t_type
+FROM users u JOIN loans l ON u.id = l.user_id
+JOIN transactions t ON t.loan_id = l.id
+WHERE (loan_status = 'active' or loan_status = 'repaid')AND (t_type = 'disbursement')
+ORDER BY u.created DESC;
+
+
+
+
+#Aggregation
+
+SELECT COUNT(id) as loan_number, SUM(amount) as amount_sum, AVG(amount) as amount_avg, MIN(amount) as smallest_loan, MAX(amount) as largest_loan
+FROM loans
+GROUP BY EXTRACT(MONTH FROM created)
+ORDER BY EXTRACT(MONTH FROM created) DESC;
